@@ -6,9 +6,11 @@ exports.upload = function(request, response) {
     form.parse(request, function(error, fields, files) {
         fs.renameSync(files.upload.path, "test.png");
         response.writeHead(200, {"Content-Type": "text/html"});
-        response.write("received image:<br/>");
-        response.write("<img src='/show' />");
-        response.end();
+        fs.readFile('templates/image.html', function(error, data) {
+            response.writeHead(200, {"Content-Type": "text/html"});
+            response.write(data);
+            response.end();
+        });
     });
 }
 
@@ -25,14 +27,25 @@ exports.welcome = function(request, response) {
 
 exports.error = function(request, response) {
     console.log("Nie wiem co robić.");
-    response.write("404 :(");
-    response.end();
+    fs.readFile('templates/error.html', function(error, data) {
+        response.writeHead(200, {"Content-Type": "text/html; charset=utf-8"});
+        response.write(data);
+        response.end();
+    });
 }
 
 exports.show = function(request, response) {
     fs.readFile("test.png", "binary", function(error, file) {
         response.writeHead(200, {"Content-Type": "image/png"});
         response.write(file, "binary");
+        response.end();
+    });
+}
+
+exports.styles = function(request, response) {
+    fs.readFile('style.css', function(error, style) {
+        response.writeHead(200, {"Content-Type": "text/css"});
+        response.write(style);
         response.end();
     });
 }
