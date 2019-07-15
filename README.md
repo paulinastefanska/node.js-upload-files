@@ -1,2 +1,2 @@
 # node.js-upload-files
-First basic ReactJS app.
+Upload files page.
